@@ -17,8 +17,6 @@ def display_board():
     for row in board:
         print(row)
 
-display_board()
-
 
 snakes = {}
 ladders = {4: 14, 9: 30, 20: 38, 28: 84}
@@ -27,3 +25,16 @@ def roll_dice():
     result = random.randint(1, 6)
 
     return result
+
+def run_game():
+    player_input = input("Welcome to Snakes and Ladders!\nInput anything (but 'Quit' or 'Exit') to continue: \n")
+    if player_input.lower() != "quit" and player_input.lower() != "exit":
+        while player_input.lower() != "quit" and player_input.lower() != "exit":
+            print("*******************************************************************************")
+            display_board()
+            player_input = input("\nRoll dice?")
+            roll = roll_dice()
+            print(f"Player 1 rolled a {roll}\n")
+
+run_game()
+        
