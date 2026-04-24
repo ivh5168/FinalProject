@@ -1,5 +1,6 @@
 import random, time
 
+# Key data
 board = [
         [100,99,98,97,96,95,94,93,92,91],
         [81,82,83,84,85,86,87,88,89,90],
@@ -13,13 +14,16 @@ board = [
         [1 ,2 ,3 ,4 ,5 ,6 ,7 ,8 ,9 ,10]
         ]
 
+snakes = {17: 7, 54: 34, 62: 18, 64: 41, 87: 36, 92: 73, 95: 75, 98: 79}
+ladders = {1: 38, 4: 14, 9: 30, 21: 42, 28: 84, 51: 67, 72: 91, 80: 99}
+
+p1_pos = 1
+p2_pos = 1
+
+# Functions
 def display_board():
     for row in board:
         print(row)
-
-
-snakes = {17: 7, 54: 34, 62: 18, 64: 41, 87: 36, 92: 73, 95: 75, 98: 79}
-ladders = {1: 38, 4: 14, 9: 30, 21: 42, 28: 84, 51: 67, 72: 91, 80: 99}
 
 def roll_dice():
     result = random.randint(1, 6)
@@ -29,12 +33,25 @@ def roll_dice():
 def run_game():
     player_input = input("Welcome to Snakes and Ladders!\nInput anything (but 'Quit' or 'Exit') to continue: \n")
     if player_input.lower() != "quit" and player_input.lower() != "exit":
+        print("\033[H\033[J", end="")  # ANSI escape sequence for clearing screen
+        count = 1
         while player_input.lower() != "quit" and player_input.lower() != "exit":
-            print("*******************************************************************************")
+            print("\033[H\033[J", end="")  # ANSI escape sequence for clearing screen
             display_board()
             player_input = input("\nRoll dice?")
             roll = roll_dice()
-            print(f"Player 1 rolled a {roll}\n")
+            
+            if count % 2 == 0:
+                turn = 2
+            else:
+                turn = 1
+
+            count += 1
+            
+            time.sleep(1)
+
+            print(f"Player {turn} rolled a {roll}\n")
+
+            time.sleep(3)
 
 run_game()
-        
