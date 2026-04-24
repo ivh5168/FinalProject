@@ -18,8 +18,8 @@ def display_board():
         print(row)
 
 
-snakes = {}
-ladders = {4: 14, 9: 30, 20: 38, 28: 84}
+snakes = {17: 7, 54: 34, 62: 18, 64: 41, 87: 36, 92: 73, 95: 75, 98: 79}
+ladders = {1: 38, 4: 14, 9: 30, 21: 42, 28: 84, 51: 67, 72: 91, 80: 99}
 
 def roll_dice():
     result = random.randint(1, 6)
