@@ -4,12 +4,14 @@ class Player:
     def __init__(self, id):
         self.id = id
         self.pos = (9, 0) # Row, column
+        self.int_pos = 1
 
     def update_position(self, roll):
         row_pos = self.pos[0]
         col_pos = self.pos[1]
         
         col_pos += roll
+        self.int_pos += roll
 
         # Send player positon to upper row
         if col_pos > 9:
@@ -65,36 +67,43 @@ class Game:
         print("\033[H\033[J", end="")  # ANSI escape sequence for clearing screen
 
     def run_game(self):
-        player_input = input("\nPlayer one name: ")
-        player_one = Player(player_input)
-        player_input = input("\nPlayer two name: ")
-        player_two = Player(player_input)
+        player_input = input("Enter 'Quit' or 'Exit' to end program at any time.")
+        player_one = Player("1")
+        player_two = Player("2")
         
         self.clear_screen()
         count = 1
+        turn = 1
 
         while player_input.lower() != "quit" and player_input.lower() != "exit":
             self.clear_screen()
             self.display_board()
-            player_input = input("\nRoll dice?")
+            print(f"\nPlayer One: {player_one.int_pos}, {player_one.pos}\nPlayer Two: {player_two.int_pos}, {player_two.pos}")
+            if count % 2 == 0:
+                turn = 2
+            else:
+                turn = 1
+            player_input = input(f"\nPlayer {turn} roll dice?")
 
             if player_input.lower() != "quit" and player_input.lower() != "exit":
                 roll = self.roll_dice()
                 
-                if count % 2 == 0:
-                    turn = 2
-                    player_two.update_position(roll)
-                else:
-                    turn = 1
+                if turn == 1:
                     player_one.update_position(roll)
+                else: # turn == 2
+                    player_two.update_position(roll)
+                    
 
                 count += 1
                 
-                time.sleep(1)
+                time.sleep(2)
 
-                print(f"Player {turn} rolled a {roll}\n{player_one.id} Position: {player_one.pos}\n{player_two.id} Position: {player_two.pos}")
+                self.clear_screen()
+                self.display_board()
+                print(f"\nPlayer One: {player_one.int_pos}, {player_one.pos}\nPlayer Two: {player_two.int_pos}, {player_two.pos}")
+                print(f"\nPlayer {turn} rolled a {roll}")
 
-                time.sleep(3)
+                time.sleep(4)
 
 def play():
     new_game = Game()
