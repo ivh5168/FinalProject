@@ -92,7 +92,7 @@ class Game:
                 
                 time.sleep(1)
 
-                print(f"Player {turn} rolled a {roll}\n")
+                print(f"Player {turn} rolled a {roll}\n{player_one.id} Position: {player_one.pos}\n{player_two.id} Position: {player_two.pos}")
 
                 time.sleep(3)
 
