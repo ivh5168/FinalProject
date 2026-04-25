@@ -21,24 +21,37 @@ class Player:
 class Game:
     def __init__(self, snakes = {17: 7, 54: 34, 62: 18, 64: 41, 87: 36, 92: 73, 95: 75, 98: 79}, ladders = {1: 38, 4: 14, 9: 30, 21: 42, 28: 84, 51: 67, 72: 91, 80: 99}):
         self.board = [
-            [100,99,98,97,96,95,94,93,92,91],
+            [91,92,93,94,95,96,97,98,99,100],
             [81,82,83,84,85,86,87,88,89,90],
-            [80,79,78,77,76,75,74,73,72,71],
+            [71,72,73,74,75,76,77,78,79,80],
             [61,62,63,64,65,66,67,68,69,70],
-            [60,59,58,57,56,55,54,53,52,51],
+            [51,52,53,54,55,56,57,58,59,60],
             [41,42,43,44,45,46,47,48,49,50],
-            [40,39,38,37,36,35,34,33,32,31],
+            [31,32,33,34,35,36,37,38,39,40],
             [21,22,23,24,25,26,27,28,29,30],
-            [20,19,18,17,16,15,14,13,12,11],
-            [1 ,2 ,3 ,4 ,5 ,6 ,7 ,8 ,9 ,10]
-            ]
-        
+            [11,12,13,14,15,16,17,18,19,20],
+            [1,2,3,4,5,6,7,8,9,10]
+        ]
         self.snakes = snakes
         self.ladders = ladders
 
     def display_board(self):
-        for row in self.board:
+        disp_board = self._format_board()
+        
+        for row in disp_board:
             print(row)
+
+    def _format_board(self):
+        disp_board = []
+        for i in range(len(self.board)):
+            row = self.board[i]
+            if i % 2 == 0: # Even row
+                row = list(reversed(row))
+                disp_board.append(row)
+            else: # Odd row 
+                disp_board.append(row)
+
+        return disp_board
 
     def roll_dice(self):
         result = random.randint(1, 6)
@@ -52,37 +65,41 @@ class Game:
         print("\033[H\033[J", end="")  # ANSI escape sequence for clearing screen
 
     def run_game(self):
+        player_input = input("\nPlayer one name: ")
+        player_one = Player(player_input)
+        player_input = input("\nPlayer two name: ")
+        player_two = Player(player_input)
         
+        self.clear_screen()
+        count = 1
 
-        player_input = input("Welcome to Snakes and Ladders!\nInput anything (but 'Quit' or 'Exit') to continue: \n")
-        if player_input.lower() != "quit" and player_input.lower() != "exit":
-            self.clear_screen
-            count = 1
-            while player_input.lower() != "quit" and player_input.lower() != "exit":
-                self.clear_screen
-                self.display_board()
-                player_input = input("\nRoll dice?")
+        while player_input.lower() != "quit" and player_input.lower() != "exit":
+            self.clear_screen()
+            self.display_board()
+            player_input = input("\nRoll dice?")
 
-                if player_input.lower() != "quit" and player_input.lower() != "exit":
-                    roll = self.roll_dice()
-                    
-                    if count % 2 == 0:
-                        turn = 2
-                        p2_pos += roll
-                    else:
-                        turn = 1
-                        p1_pos += roll
+            if player_input.lower() != "quit" and player_input.lower() != "exit":
+                roll = self.roll_dice()
+                
+                if count % 2 == 0:
+                    turn = 2
+                    player_two.update_position(roll)
+                else:
+                    turn = 1
+                    player_one.update_position(roll)
 
-                    count += 1
-                    
-                    time.sleep(1)
+                count += 1
+                
+                time.sleep(1)
 
-                    print(f"Player {turn} rolled a {roll}\n")
+                print(f"Player {turn} rolled a {roll}\n")
 
-                    time.sleep(3)
+                time.sleep(3)
 
 def play():
     new_game = Game()
-    new_game.run_game()
+    player_input = input("Welcome to Snakes and Ladders!\nInput anything (but 'Quit' or 'Exit') to continue: \n")
+    if player_input.lower() != "quit" and player_input.lower() != "exit":
+        new_game.run_game()
 
 play()
