@@ -17,9 +17,6 @@ board = [
 snakes = {17: 7, 54: 34, 62: 18, 64: 41, 87: 36, 92: 73, 95: 75, 98: 79}
 ladders = {1: 38, 4: 14, 9: 30, 21: 42, 28: 84, 51: 67, 72: 91, 80: 99}
 
-p1_pos = 1
-p2_pos = 1
-
 # Functions
 def display_board():
     for row in board:
@@ -30,7 +27,13 @@ def roll_dice():
 
     return result
 
+def update_board():
+    pass
+
 def run_game():
+    p1_pos = 1
+    p2_pos = 1
+
     player_input = input("Welcome to Snakes and Ladders!\nInput anything (but 'Quit' or 'Exit') to continue: \n")
     if player_input.lower() != "quit" and player_input.lower() != "exit":
         print("\033[H\033[J", end="")  # ANSI escape sequence for clearing screen
@@ -39,19 +42,23 @@ def run_game():
             print("\033[H\033[J", end="")  # ANSI escape sequence for clearing screen
             display_board()
             player_input = input("\nRoll dice?")
-            roll = roll_dice()
-            
-            if count % 2 == 0:
-                turn = 2
-            else:
-                turn = 1
 
-            count += 1
-            
-            time.sleep(1)
+            if player_input.lower() != "quit" and player_input.lower() != "exit":
+                roll = roll_dice()
+                
+                if count % 2 == 0:
+                    turn = 2
+                    p2_pos += roll
+                else:
+                    turn = 1
+                    p1_pos += roll
 
-            print(f"Player {turn} rolled a {roll}\n")
+                count += 1
+                
+                time.sleep(1)
 
-            time.sleep(3)
+                print(f"Player {turn} rolled a {roll}\n")
+
+                time.sleep(3)
 
 run_game()
