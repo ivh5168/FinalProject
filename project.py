@@ -10,8 +10,9 @@ class Player:
         row_pos = self.pos[0]
         col_pos = self.pos[1]
         
-        col_pos += roll
-        self.int_pos += roll
+        if self.int_pos + roll <= 100: 
+            col_pos += roll
+            self.int_pos += roll
 
         # Send player positon to upper row
         if col_pos > 9:
@@ -76,13 +77,17 @@ class Game:
         turn = 1
 
         while player_input.lower() != "quit" and player_input.lower() != "exit":
+            # Update screen
             self.clear_screen()
             self.display_board()
             print(f"\nPlayer One: {player_one.int_pos}, {player_one.pos}\nPlayer Two: {player_two.int_pos}, {player_two.pos}")
+
+            # Determine player turn
             if count % 2 == 0:
                 turn = 2
             else:
                 turn = 1
+
             player_input = input(f"\nPlayer {turn} roll dice?")
 
             if player_input.lower() != "quit" and player_input.lower() != "exit":
@@ -93,11 +98,11 @@ class Game:
                 else: # turn == 2
                     player_two.update_position(roll)
                     
-
                 count += 1
                 
                 time.sleep(2)
 
+                # Update screen
                 self.clear_screen()
                 self.display_board()
                 print(f"\nPlayer One: {player_one.int_pos}, {player_one.pos}\nPlayer Two: {player_two.int_pos}, {player_two.pos}")
