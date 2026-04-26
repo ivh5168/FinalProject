@@ -22,12 +22,12 @@ class Player:
         self.pos = (row_pos, col_pos)
 
     def hit_snake(self, new_int, new_pos):
-        print(f"Player {id} hit a snake!")
+        print(f"Player {self.id} hit a snake!")
         self.int_pos = new_int
         self.pos = new_pos
 
     def hit_ladder(self, new_int, new_pos):
-        print(f"Player {id} got to a ladder!")
+        print(f"Player {self.id} got to a ladder!")
         self.int_pos = new_int
         self.pos = new_pos
 
@@ -139,12 +139,12 @@ class Game:
                     player_two.update_position(roll)
 
                     if player_two.int_pos in self.snakes: # Hit a snake
-                        new_int = self.snakes[player_one.int_pos][0]
-                        new_pos = self.snakes[player_one.int_pos][1]
+                        new_int = self.snakes[player_two.int_pos][0]
+                        new_pos = self.snakes[player_two.int_pos][1]
                         player_two.hit_snake(new_int, new_pos)
                     elif player_two.int_pos in self.ladders: # Hit a ladder
-                        new_int = self.ladders[player_one.int_pos][0]
-                        new_pos = self.ladders[player_one.int_pos][1]
+                        new_int = self.ladders[player_two.int_pos][0]
+                        new_pos = self.ladders[player_two.int_pos][1]
                         player_two.hit_ladder(new_int, new_pos)
                     
                 turns += 1
@@ -157,7 +157,7 @@ class Game:
                 print(f"\nPlayer One: {player_one.int_pos}, {player_one.pos}\nPlayer Two: {player_two.int_pos}, {player_two.pos}")
                 print(f"\nPlayer {turn} rolled a {roll}")
 
-                time.sleep(4)
+                time.sleep(3)
 
 def play():
     new_game = Game()
