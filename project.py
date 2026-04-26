@@ -21,8 +21,39 @@ class Player:
 
         self.pos = (row_pos, col_pos)
 
+    def hit_snake(self, new_int, new_pos):
+        print(f"Player {id} hit a snake!")
+        self.int_pos = new_int
+        self.pos = new_pos
+
+    def hit_ladder(self, new_int, new_pos):
+        print(f"Player {id} got to a ladder!")
+        self.int_pos = new_int
+        self.pos = new_pos
+
 class Game:
-    def __init__(self, snakes = {17: 7, 54: 34, 62: 18, 64: 41, 87: 36, 92: 73, 95: 75, 98: 79}, ladders = {1: 38, 4: 14, 9: 30, 21: 42, 28: 84, 51: 67, 72: 91, 80: 99}):
+    def __init__(self, 
+    snakes = {
+    17: (7, (9, 6)),
+    54: (34, (6, 3)),
+    62: (18, (8, 7)),
+    64: (41, (5, 0)),
+    87: (36, (6, 5)),
+    92: (73, (2, 2)),
+    95: (75, (2, 4)),
+    98: (79, (2, 8))}, 
+    
+    ladders = {
+    2: (38, (3, 7)),
+    4: (14, (8, 3)),
+    9: (30, (7, 9)),
+    21: (42, (5, 1)),
+    28: (84, (1, 3)),
+    51: (67, (3, 6)),
+    72: (91, (0, 0)),
+    80: (99, (0, 8))
+    }
+    ):
         self.board = [
             [91,92,93,94,95,96,97,98,99,100],
             [81,82,83,84,85,86,87,88,89,90],
@@ -73,7 +104,7 @@ class Game:
         player_two = Player("2")
         
         self.clear_screen()
-        count = 1
+        turns = 1 # Keeps track of how many turns have passed.
         turn = 1
 
         while player_input.lower() != "quit" and player_input.lower() != "exit":
@@ -83,7 +114,7 @@ class Game:
             print(f"\nPlayer One: {player_one.int_pos}, {player_one.pos}\nPlayer Two: {player_two.int_pos}, {player_two.pos}")
 
             # Determine player turn
-            if count % 2 == 0:
+            if turns % 2 == 0:
                 turn = 2
             else:
                 turn = 1
@@ -95,10 +126,28 @@ class Game:
                 
                 if turn == 1:
                     player_one.update_position(roll)
+
+                    if player_one.int_pos in self.snakes: # Hit a snake
+                        new_int = self.snakes[player_one.int_pos][0]
+                        new_pos = self.snakes[player_one.int_pos][1]
+                        player_one.hit_snake(new_int, new_pos)
+                    elif player_one.int_pos in self.ladders: # Hit a ladder
+                        new_int = self.ladders[player_one.int_pos][0]
+                        new_pos = self.ladders[player_one.int_pos][1]
+                        player_one.hit_ladder(new_int, new_pos)
                 else: # turn == 2
                     player_two.update_position(roll)
+
+                    if player_two.int_pos in self.snakes: # Hit a snake
+                        new_int = self.snakes[player_one.int_pos][0]
+                        new_pos = self.snakes[player_one.int_pos][1]
+                        player_two.hit_snake(new_int, new_pos)
+                    elif player_two.int_pos in self.ladders: # Hit a ladder
+                        new_int = self.ladders[player_one.int_pos][0]
+                        new_pos = self.ladders[player_one.int_pos][1]
+                        player_two.hit_ladder(new_int, new_pos)
                     
-                count += 1
+                turns += 1
                 
                 time.sleep(2)
 
