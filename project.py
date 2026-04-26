@@ -11,18 +11,18 @@ class Player:
         row_pos = self.pos[0]
         col_pos = self.pos[1]
         
-        if self.int_pos + roll <= 100: 
+        if self.int_pos + roll <= 100: # If player does not overshoot 100
             col_pos += roll
             self.int_pos += roll
 
-        # Send player positon to upper row
+        # Updates player positon if they made it to a upper row
         if col_pos > 9:
             row_pos -= 1
             col_pos -= 10
 
-        self.pos = (row_pos, col_pos)
+        self.pos = (row_pos, col_pos) # Updates player coordinates
 
-        if self.int_pos == 100:
+        if self.int_pos == 100: # If the player reaches the end and wins
             self.has_won = True
 
     def hit_snake(self, new_int, new_pos):
@@ -81,6 +81,7 @@ class Game:
             print(row)
 
     def _format_board(self):
+        # Formats rows so even rows are in displayed in reverse.
         disp_board = []
         for i in range(len(self.board)):
             row = self.board[i]
@@ -98,6 +99,7 @@ class Game:
         return result
 
     def update_board(self):
+        # Updates player positions on the board
         pass
 
     def clear_screen(self):
@@ -110,7 +112,7 @@ class Game:
         
         self.clear_screen()
         turns = 1 # Keeps track of how many turns have passed.
-        turn = 1
+        turn = 1 # 1 - Player one's turn. 2 - Player two's turn.
 
         while player_input.lower() != "quit" and player_input.lower() != "exit" and player_one.has_won == False and player_two.has_won == False:
             # Update screen
@@ -126,10 +128,10 @@ class Game:
 
             player_input = input(f"\nPlayer {turn} roll dice?")
 
-            if player_input.lower() != "quit" and player_input.lower() != "exit":
+            if player_input.lower() != "quit" and player_input.lower() != "exit": # If player chooses to not exit
                 roll = self.roll_dice()
                 
-                if turn == 1:
+                if turn == 1: # If player one's turn
                     player_one.update_position(roll)
 
                     if player_one.int_pos in self.snakes: # Hit a snake
@@ -140,7 +142,7 @@ class Game:
                         new_int = self.ladders[player_one.int_pos][0]
                         new_pos = self.ladders[player_one.int_pos][1]
                         player_one.hit_ladder(new_int, new_pos)
-                else: # turn == 2
+                else: # turn == 2 # If player two's turn
                     player_two.update_position(roll)
 
                     if player_two.int_pos in self.snakes: # Hit a snake
@@ -164,6 +166,7 @@ class Game:
 
                 time.sleep(1)
 
+        # If game ended by someone winning.
         if player_one.has_won:
             self.clear_screen()
             print("Player one has won!")
@@ -175,17 +178,18 @@ class Game:
 
     def offer_replay(self):
         player_input = input("Play again? (y/n)")
-        if player_input.lower() == "y":
+        if player_input.lower() == "y": # Restarts game
             play()
-        elif player_input.lower() != "n":
+        elif player_input.lower() != "n": # Invalid input
             print("Invalid input")
             self.clear_screen()
             self.offer_replay()
-
+        # Else code finishes and program ends
     
 
 def play():
-    new_game = Game()
+    new_game = Game() # Creates new game
+
     new_game.clear_screen()
     player_input = input("Welcome to Snakes and Ladders!\nInput anything (but 'Quit' or 'Exit') to continue: \n")
     if player_input.lower() != "quit" and player_input.lower() != "exit":
