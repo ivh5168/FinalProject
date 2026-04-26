@@ -5,6 +5,7 @@ class Player:
         self.id = id
         self.pos = (9, 0) # Row, column
         self.int_pos = 1
+        self.has_won = False
 
     def update_position(self, roll):
         row_pos = self.pos[0]
@@ -20,6 +21,9 @@ class Player:
             col_pos -= 10
 
         self.pos = (row_pos, col_pos)
+
+        if self.int_pos == 100:
+            self.has_won = True
 
     def hit_snake(self, new_int, new_pos):
         print(f"Player {self.id} hit a snake!")
@@ -107,7 +111,7 @@ class Game:
         turns = 1 # Keeps track of how many turns have passed.
         turn = 1
 
-        while player_input.lower() != "quit" and player_input.lower() != "exit":
+        while player_input.lower() != "quit" and player_input.lower() != "exit" and player_one.has_won == False and player_two.has_won == False:
             # Update screen
             self.clear_screen()
             self.display_board()
@@ -149,7 +153,7 @@ class Game:
                     
                 turns += 1
                 
-                time.sleep(2)
+                time.sleep(1)
 
                 # Update screen
                 self.clear_screen()
@@ -157,7 +161,14 @@ class Game:
                 print(f"\nPlayer One: {player_one.int_pos}, {player_one.pos}\nPlayer Two: {player_two.int_pos}, {player_two.pos}")
                 print(f"\nPlayer {turn} rolled a {roll}")
 
-                time.sleep(3)
+                time.sleep(1)
+
+        if player_one.has_won:
+            self.clear_screen()
+            print("Player one has won!")
+        elif player_two.has_won:
+            self.clear_screen()
+            print("Player two has won!")
 
 def play():
     new_game = Game()
