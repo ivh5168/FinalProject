@@ -22,7 +22,7 @@ class Player:
 
         self.pos = (row_pos, col_pos) # Updates player coordinates
 
-        if self.int_pos == 100: # If the player reaches the end and wins
+        if self.int_pos == 100: # If the player reaches the end and wins.
             self.has_won = True
 
     def hit_snake(self, new_int, new_pos):
@@ -60,7 +60,7 @@ class Game:
         98: (79, (2, 8))}, 
         
         ladders = {
-        2: (38, (3, 7)),
+        2: (38, (6, 7)),
         4: (14, (8, 3)),
         9: (30, (7, 9)),
         21: (42, (5, 1)),
@@ -98,15 +98,16 @@ class Game:
 
         return result
 
-    def update_board(self):
-        # Updates player positions on the board
-        pass
-
     def clear_screen(self):
         print("\033[H\033[J", end="")  # ANSI escape sequence for clearing screen
 
     def run_game(self):
-        player_input = input("Enter 'Quit' or 'Exit' to end program at any time.")
+        try:
+            player_input = input("Enter 'Quit' or 'Exit' to end program at any time. ")
+        except Exception:
+            player_input = ""
+            print("Input valid argument next time.")
+
         player_one = Player("1")
         player_two = Player("2")
         
@@ -126,8 +127,12 @@ class Game:
             else:
                 turn = 1
 
-            player_input = input(f"\nPlayer {turn} roll dice?")
-
+            try:
+                player_input = input(f"\nPlayer {turn} roll dice?")
+            except Exception:
+                player_input = ""
+                print("Input valid argument next time.")
+            
             if player_input.lower() != "quit" and player_input.lower() != "exit": # If player chooses to not exit
                 roll = self.roll_dice()
                 
@@ -177,7 +182,12 @@ class Game:
             self.offer_replay()
 
     def offer_replay(self):
-        player_input = input("Play again? (y/n)")
+        try:
+            player_input = input("Play again? (y/n)")
+        except Exception:
+            player_input = ""
+            print("Input valid argument next time.")
+        
         if player_input.lower() == "y": # Restarts game
             play()
         elif player_input.lower() != "n": # Invalid input
@@ -191,7 +201,13 @@ def play():
     new_game = Game() # Creates new game
 
     new_game.clear_screen()
-    player_input = input("Welcome to Snakes and Ladders!\nInput anything (but 'Quit' or 'Exit') to continue: \n")
+
+    try:
+        player_input = input("Welcome to Snakes and Ladders!\nInput anything (but 'Quit' or 'Exit') to continue: \n")
+    except Exception:
+        player_input = ""
+        print("Input valid argument next time.")
+
     if player_input.lower() != "quit" and player_input.lower() != "exit":
         new_game.run_game()
 
