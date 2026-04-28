@@ -106,7 +106,7 @@ class Game:
             player_input = input("Enter 'Quit' or 'Exit' to end program at any time. ")
         except Exception:
             player_input = ""
-            print("Input valid argument next time.")
+            print("Please input valid argument next time.")
 
         player_one = Player("1")
         player_two = Player("2")
@@ -131,7 +131,7 @@ class Game:
                 player_input = input(f"\nPlayer {turn} roll dice?")
             except Exception:
                 player_input = ""
-                print("Input valid argument next time.")
+                print("Please input valid argument next time.")
             
             if player_input.lower() != "quit" and player_input.lower() != "exit": # If player chooses to not exit
                 roll = self.roll_dice()
@@ -186,7 +186,7 @@ class Game:
             player_input = input("Play again? (y/n)")
         except Exception:
             player_input = ""
-            print("Input valid argument next time.")
+            print("Please input valid argument next time.")
         
         if player_input.lower() == "y": # Restarts game
             play()
@@ -206,7 +206,7 @@ def play():
         player_input = input("Welcome to Snakes and Ladders!\nInput anything (but 'Quit' or 'Exit') to continue: \n")
     except Exception:
         player_input = ""
-        print("Input valid argument next time.")
+        print("Please input valid argument next time.")
 
     if player_input.lower() != "quit" and player_input.lower() != "exit":
         new_game.run_game()
