@@ -49,6 +49,7 @@ class Game:
             ["11","12","13","14_L2","15","16","17_S1","18_S3","19","20"],
             ["1","2_L1","3","4_L2","5","6","7_S1","8","9_L3","10"]
         ],
+        # Formatted top of snake: bottom of snake (coords)
         snakes = {
         17: (7, (9, 6)),
         54: (34, (6, 3)),
@@ -57,8 +58,9 @@ class Game:
         87: (36, (6, 5)),
         92: (73, (2, 2)),
         95: (75, (2, 4)),
-        98: (79, (2, 8))}, 
-        
+        98: (79, (2, 8))
+        }, 
+        # Formatted bottom of ladder: top of ladder (coords)
         ladders = {
         2: (38, (6, 7)),
         4: (14, (8, 3)),
@@ -73,20 +75,29 @@ class Game:
         self.board = board
         self.snakes = snakes
         self.ladders = ladders
+        self.turns = 1 # Keeps track of how many turns have passed.
 
-    def display_board(self):
-        disp_board = self._format_board()
+    def display_board(self, p1, p2):
+        disp_board = self._format_board(p1, p2)
         
         for row in disp_board:
             print(row)
 
-    def _format_board(self):
+    def _format_board(self, p1, p2):
         # Formats rows so even rows are in displayed in reverse.
         disp_board = []
         for i in range(len(self.board)):
-            row = self.board[i]
+            row = self.board[i][:] # Creates a copy of the row
+            # Displays player coordinates by adding them to the display board
+            for j in range(len(row)):
+                if i == p2.pos[0] and j == p2.pos[1]: # If i and j equal player one's coords
+                    row[j] = "P2_" + row[j]
+                if i == p1.pos[0] and j == p1.pos[1]: # If i and j equal player one's coords
+                    row[j] = "P1_" + row[j]
+
+            # Adds row to board
             if i % 2 == 0: # Even row
-                row = list(reversed(row))
+                row = list(reversed(row)) # Reverses the board to match proper Snakes and Ladders board
                 disp_board.append(row)
             else: # Odd row 
                 disp_board.append(row)
@@ -101,6 +112,14 @@ class Game:
     def clear_screen(self):
         print("\033[H\033[J", end="")  # ANSI escape sequence for clearing screen
 
+    def determine_turn(self):
+        if self.turns % 2 == 0:
+            turn = 2
+        else:
+            turn = 1
+        
+        return turn
+
     def run_game(self):
         try:
             player_input = input("Enter 'Quit' or 'Exit' to end program at any time. ")
@@ -112,20 +131,17 @@ class Game:
         player_two = Player("2")
         
         self.clear_screen()
-        turns = 1 # Keeps track of how many turns have passed.
+        
         turn = 1 # 1 - Player one's turn. 2 - Player two's turn.
 
         while player_input.lower() != "quit" and player_input.lower() != "exit" and player_one.has_won == False and player_two.has_won == False:
             # Update screen
             self.clear_screen()
-            self.display_board()
+            self.display_board(player_one, player_two)
             print(f"\nPlayer One: {player_one.int_pos}, {player_one.pos}\nPlayer Two: {player_two.int_pos}, {player_two.pos}")
 
             # Determine player turn
-            if turns % 2 == 0:
-                turn = 2
-            else:
-                turn = 1
+            turn = self.determine_turn()
 
             try:
                 player_input = input(f"\nPlayer {turn} roll dice?")
@@ -139,37 +155,45 @@ class Game:
                 if turn == 1: # If player one's turn
                     player_one.update_position(roll)
 
-                    if player_one.int_pos in self.snakes: # Hit a snake
+                    if player_one.int_pos in self.snakes: # If player one hit a snake
+                        # Gets new player positions
                         new_int = self.snakes[player_one.int_pos][0]
                         new_pos = self.snakes[player_one.int_pos][1]
+
                         player_one.hit_snake(new_int, new_pos)
-                    elif player_one.int_pos in self.ladders: # Hit a ladder
+                    elif player_one.int_pos in self.ladders: # If player one hit a ladder
+                        # Gets new player positions
                         new_int = self.ladders[player_one.int_pos][0]
                         new_pos = self.ladders[player_one.int_pos][1]
+
                         player_one.hit_ladder(new_int, new_pos)
                 else: # turn == 2 # If player two's turn
                     player_two.update_position(roll)
 
-                    if player_two.int_pos in self.snakes: # Hit a snake
+                    if player_two.int_pos in self.snakes: # If player two hit a snake
+                        # Gets new player positions
                         new_int = self.snakes[player_two.int_pos][0]
                         new_pos = self.snakes[player_two.int_pos][1]
+
                         player_two.hit_snake(new_int, new_pos)
-                    elif player_two.int_pos in self.ladders: # Hit a ladder
+                    elif player_two.int_pos in self.ladders: # If player two hit a ladder
+                        # Gets new player positions
                         new_int = self.ladders[player_two.int_pos][0]
                         new_pos = self.ladders[player_two.int_pos][1]
+
                         player_two.hit_ladder(new_int, new_pos)
                     
-                turns += 1
+                self.turns += 1
                 
-                time.sleep(1)
+                time.sleep(2)
 
                 # Update screen
                 self.clear_screen()
-                self.display_board()
+                self.display_board(player_one, player_two)
                 print(f"\nPlayer One: {player_one.int_pos}, {player_one.pos}\nPlayer Two: {player_two.int_pos}, {player_two.pos}")
                 print(f"\nPlayer {turn} rolled a {roll}")
 
-                time.sleep(1)
+                time.sleep(3)
 
         # If game ended by someone winning.
         if player_one.has_won:

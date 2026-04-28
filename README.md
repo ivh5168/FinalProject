@@ -1,4 +1,7 @@
 # FinalProject
 
-This GitHub repository includes a my creation of Snakes and Ladders made in python. Players move from 1 to 100. First player to 100 wins! Players roll a die to move between 1 and 6 spots inclusive. Turns alternate. When a player lands on a snake, they player is sent backwards to the other end of the snake. When a player lands on a ladder, they player is sent forwards to the top of the ladder. Ladder locations are marked on the board after the spot number with _L# and snakes locations with _S#. 
+This GitHub repository includes a my creation of Snakes and Ladders made in python. Players move from 1 to 100. First player to 100 wins! Players roll a die to move between 1 and 6 spots inclusive. Turns alternate. When a player lands on a snake, they player is sent backwards to the other end of the snake. When a player lands on a ladder, they player is sent forwards to the top of the ladder. 
+
+Ladder locations are marked on the board after the spot number with _L# and snakes locations with _S#. Player locations are marked as well before the spot number with P#_. 
+
 Begin by running the project.py file. Enter anything but "quit" or "exit" to continue moving throughout the game. If you wish to exit the program at anytime enter "quit" or "exit" to prematurely end the program (is case insensitive). Enjoy!
