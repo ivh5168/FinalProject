@@ -3,7 +3,7 @@ import random, time
 class Player:
     def __init__(self, id):
         self.id = id
-        self.pos = (9, 0) # Row, column
+        self.pos = (9, 0) # Player coordinates formated: row, column
         self.int_pos = 1
         self.has_won = False
 
@@ -15,7 +15,7 @@ class Player:
             col_pos += roll
             self.int_pos += roll
 
-        # Updates player positon if they made it to a upper row
+        # Updates player coordinates if they made it to a upper row
         if col_pos > 9:
             row_pos -= 1
             col_pos -= 10
@@ -138,7 +138,7 @@ class Game:
             # Update screen
             self.clear_screen()
             self.display_board(player_one, player_two)
-            print(f"\nPlayer One: {player_one.int_pos}, {player_one.pos}\nPlayer Two: {player_two.int_pos}, {player_two.pos}")
+            print(f"\nPlayer One: {player_one.int_pos}\nPlayer Two: {player_two.int_pos}")
 
             # Determine player turn
             turn = self.determine_turn()
@@ -190,7 +190,7 @@ class Game:
                 # Update screen
                 self.clear_screen()
                 self.display_board(player_one, player_two)
-                print(f"\nPlayer One: {player_one.int_pos}, {player_one.pos}\nPlayer Two: {player_two.int_pos}, {player_two.pos}")
+                print(f"\nPlayer One: {player_one.int_pos}\nPlayer Two: {player_two.int_pos}")
                 print(f"\nPlayer {turn} rolled a {roll}")
 
                 time.sleep(3)
