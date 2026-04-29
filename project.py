@@ -185,7 +185,7 @@ class Game:
                     
                 self.turns += 1
                 
-                time.sleep(2)
+                time.sleep(2) # Pause for dramatic effect
 
                 # Update screen
                 self.clear_screen()
